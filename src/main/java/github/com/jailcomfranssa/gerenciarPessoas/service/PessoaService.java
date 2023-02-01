@@ -7,10 +7,10 @@ import java.util.Optional;
 
 public interface PessoaService {
 
-    PessoaDto criar(PessoaDto pessoaDto);
-    PessoaDto editar(Long id, PessoaDto pessoaDto);
-    Optional<PessoaDto> consultar(Long id);
-    List<PessoaDto> listar();
+    PessoaDto criarPessoa(PessoaDto pessoaDto);
+    PessoaDto editarPessoa(Long id, PessoaDto pessoaDto);
+    PessoaDto consultarPessoa(Long id);
+    List<PessoaDto> listarPessoa();
 
 
 

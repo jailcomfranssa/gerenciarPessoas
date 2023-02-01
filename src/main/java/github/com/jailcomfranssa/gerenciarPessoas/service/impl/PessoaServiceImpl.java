@@ -4,60 +4,53 @@ import github.com.jailcomfranssa.gerenciarPessoas.model.dto.PessoaDto;
 import github.com.jailcomfranssa.gerenciarPessoas.model.entities.Pessoa;
 import github.com.jailcomfranssa.gerenciarPessoas.repository.PessoaRepository;
 import github.com.jailcomfranssa.gerenciarPessoas.service.PessoaService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PessoaServiceImpl implements PessoaService {
 
     private final PessoaRepository pessoaRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public PessoaServiceImpl(PessoaRepository pessoaRepository) {
+    public PessoaServiceImpl(PessoaRepository pessoaRepository, ModelMapper modelMapper) {
         this.pessoaRepository = pessoaRepository;
-    }
-
-
-    @Override
-    @Transactional
-    public PessoaDto criar(PessoaDto pessoaDto) {
-        Pessoa entity = new Pessoa();
-        entity.setNome(pessoaDto.getNome());
-        entity.setDataDeNascimento(pessoaDto.getDataDeNascimento());
-        entity = pessoaRepository.save(entity);
-        return new PessoaDto(entity);
+        this.modelMapper = modelMapper;
     }
 
     @Override
-    @Transactional
-    public PessoaDto editar(Long id, PessoaDto pessoaDto) {
-        try{
-            Pessoa entity = pessoaRepository.getReferenceById(id);
-            entity.setNome(pessoaDto.getNome());
-            entity.setDataDeNascimento(pessoaDto.getDataDeNascimento());
-            entity = pessoaRepository.save(entity);
-            return new PessoaDto(entity);
-        }catch (EntityNotFoundException e){
-            throw new RuntimeException("Id: "+id+ " não encontrado");
-        }
+    public PessoaDto criarPessoa(PessoaDto pessoaDto) {
+        Pessoa pessoa = this.modelMapper.map(pessoaDto, Pessoa.class);
+        Pessoa pessoaDados = this.pessoaRepository.save(pessoa);
+        return this.modelMapper.map(pessoaDados, PessoaDto.class);
     }
 
     @Override
-    public Optional<PessoaDto> consultar(Long id) {
-        Optional<Pessoa> pessoa = pessoaRepository.findById(id);
-        Pessoa entity = pessoa.orElseThrow(() -> new RuntimeException("Pessoa com Id: "+ id+" não encontrado"));
-        return Optional.of(new PessoaDto(entity));
+    public PessoaDto editarPessoa(Long id, PessoaDto pessoaDto) {
+        Pessoa pessoa = this.pessoaRepository.findById(id)
+                .orElseThrow(()-> new RuntimeException("Pessoa Id: " + id + " não encontrada"));
+        pessoa.setNome(pessoaDto.getNome());
+        pessoa.setDataDeNascimento(pessoaDto.getDataDeNascimento());
+
+        Pessoa pessoaDados = this.pessoaRepository.save(pessoa);
+        return this.modelMapper.map(pessoaDados, PessoaDto.class);
     }
 
     @Override
-    public List<PessoaDto> listar() {
-        List<Pessoa> pessoas = pessoaRepository.findAll();
-        List<PessoaDto> pessoaDtos = pessoas.stream().map(PessoaDto::new).toList();
-        return pessoaDtos;
+    public PessoaDto consultarPessoa(Long id) {
+        Pessoa pessoa = this.pessoaRepository.findById(id)
+                .orElseThrow(()-> new RuntimeException("Pessoa Id: " + id + " não encontrada"));
+
+        return this.modelMapper.map(pessoa,PessoaDto.class);
+    }
+
+    @Override
+    public List<PessoaDto> listarPessoa() {
+        List<Pessoa> pessoas = this.pessoaRepository.findAll();
+        List<PessoaDto> pessoaDados = pessoas.stream().map((p) -> this.modelMapper.map(p, PessoaDto.class)).toList();
+        return pessoaDados;
     }
 }

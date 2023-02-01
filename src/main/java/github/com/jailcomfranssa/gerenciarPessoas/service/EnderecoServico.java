@@ -7,8 +7,8 @@ import java.util.Optional;
 
 public interface EnderecoServico {
 
-    EnderecoDto criar(EnderecoDto enderecoDto, Long id);
-    List<EnderecoDto> listar();
-    Optional<EnderecoDto> enderecoPrincipal(Long id);
+    EnderecoDto criarEndereco(EnderecoDto enderecoDto, Long id);
+    List<EnderecoDto> listarEndereco();
+    EnderecoDto enderecoPrincipal(Long id);
 
 }

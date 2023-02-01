@@ -2,6 +2,7 @@ package github.com.jailcomfranssa.gerenciarPessoas.model.entities;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import java.util.Set;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class Pessoa {

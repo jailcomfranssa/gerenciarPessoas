@@ -1,6 +1,6 @@
 package github.com.jailcomfranssa.gerenciarPessoas.model.dto;
 
-import github.com.jailcomfranssa.gerenciarPessoas.model.entities.Endereco;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,23 +17,8 @@ public class EnderecoDto {
     private String numero;
 
     private String cidade;
-    Boolean principal;
+    private Boolean principal;
 
-    public EnderecoDto(Long id, String logradouro, String cep, String numero, String cidade, Boolean principal){
-        this.id = id;
-        this.logradouro = logradouro;
-        this.cep = cep;
-        this.numero = numero;
-        this.cidade = cidade;
-        this.principal = principal;
-    }
-    public EnderecoDto(Endereco entity){
-        this.id = entity.getId();
-        this.logradouro = entity.getLogradouro();
-        this.cep = entity.getCep();
-        this.numero = entity.getNumero();
-        this.cidade = entity.getCidade();
-        this.principal = entity.getPrincipal();
+    private PessoaDto pessoa;
 
-    }
 }

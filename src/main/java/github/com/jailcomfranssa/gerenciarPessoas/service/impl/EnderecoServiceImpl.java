@@ -7,56 +7,61 @@ import github.com.jailcomfranssa.gerenciarPessoas.model.entities.Pessoa;
 import github.com.jailcomfranssa.gerenciarPessoas.repository.EnderecoRepository;
 import github.com.jailcomfranssa.gerenciarPessoas.repository.PessoaRepository;
 import github.com.jailcomfranssa.gerenciarPessoas.service.EnderecoServico;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EnderecoServiceImpl implements EnderecoServico {
 
     private final EnderecoRepository enderecoRepository;
     private final PessoaRepository pessoaRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public EnderecoServiceImpl(EnderecoRepository enderecoRepository, PessoaRepository pessoaRepository) {
+    public EnderecoServiceImpl(EnderecoRepository enderecoRepository, PessoaRepository pessoaRepository, ModelMapper modelMapper) {
         this.enderecoRepository = enderecoRepository;
         this.pessoaRepository = pessoaRepository;
+        this.modelMapper = modelMapper;
     }
 
 
     @Override
-    public EnderecoDto criar(EnderecoDto enderecoDto, Long id) {
-        Optional<Pessoa> pessoa = pessoaRepository.findById(id);
-        if (pessoa.isPresent()){
-            Endereco endereco = new Endereco();
-            endereco.setPessoa(pessoa.get());
-            endereco.setCep(enderecoDto.getCep());
-            endereco.setCidade(enderecoDto.getCidade());
-            endereco.setNumero(enderecoDto.getNumero());
-            endereco.setLogradouro(enderecoDto.getLogradouro());
-            endereco.setPrincipal(enderecoDto.getPrincipal());
-            endereco = enderecoRepository.save(endereco);
-            return new EnderecoDto(endereco);
-        }else {
-            throw new RuntimeException("Pessoa Id: "+ id + "Não encontrada");
-        }
+    public EnderecoDto criarEndereco(EnderecoDto enderecoDto, Long id) {
+
+       Pessoa pessoa = this.pessoaRepository.findById(id)
+               .orElseThrow(() -> new RuntimeException("Pessoa Id: " + id +" não encontrada"));
+
+       Endereco endereco = this.modelMapper.map(enderecoDto, Endereco.class);
+       endereco.setCep(enderecoDto.getCep());
+       endereco.setCidade(enderecoDto.getCidade());
+       endereco.setNumero(enderecoDto.getNumero());
+       endereco.setLogradouro(enderecoDto.getLogradouro());
+       endereco.setPrincipal(enderecoDto.getPrincipal());
+       endereco.setPessoa(pessoa);
+
+       Endereco addEndereco = this.enderecoRepository.save(endereco);
+       return this.modelMapper.map(addEndereco, EnderecoDto.class);
 
     }
 
     @Override
-    public List<EnderecoDto> listar() {
-        List<Endereco> enderecos = enderecoRepository.findAll();
-        return enderecos.stream().map(EnderecoDto::new).toList();
+    public List<EnderecoDto> listarEndereco() {
+        List<Endereco> enderecos = this.enderecoRepository.findAll();
+        List<EnderecoDto> enderecoDtos = enderecos.stream().map((e)->
+                this.modelMapper.map(e, EnderecoDto.class)).toList();
+
+        return enderecoDtos;
     }
 
     @Override
-    public Optional<EnderecoDto> enderecoPrincipal(Long id) {
-        Optional<Endereco> endereco = Optional.ofNullable(enderecoRepository.findByPrincipal(id));
-        if(endereco.isPresent()){
-            return Optional.of(new EnderecoDto(endereco.get()));
-        }
-        throw new RuntimeException("Pessoa Id: "+ id + "Não encontrada");
+    public EnderecoDto enderecoPrincipal(Long id) {
+        Endereco endereco = this.enderecoRepository.findById(id)
+                .orElseThrow(()-> new RuntimeException("Pessoa Id: " + id + " não encontrada"));
+        Endereco _endereco = this.enderecoRepository.findByPrincipal(endereco.getId());
+
+        return this.modelMapper.map(_endereco, EnderecoDto.class);
     }
 }
