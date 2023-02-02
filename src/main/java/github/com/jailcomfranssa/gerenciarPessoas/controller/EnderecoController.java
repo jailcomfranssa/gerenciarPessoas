@@ -3,6 +3,8 @@ package github.com.jailcomfranssa.gerenciarPessoas.controller;
 import github.com.jailcomfranssa.gerenciarPessoas.model.dto.EnderecoDto;
 import github.com.jailcomfranssa.gerenciarPessoas.service.EnderecoServico;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,8 +28,8 @@ public class EnderecoController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<EnderecoDto>> listar(){
-        return new ResponseEntity<>(enderecoServico.listarEndereco(), HttpStatus.OK);
+    public ResponseEntity<Page<EnderecoDto>> listar(Pageable pageable){
+        return new ResponseEntity<>(enderecoServico.listarEndereco(pageable), HttpStatus.OK);
     }
 
     @GetMapping("/principal/pessoa/{id}")

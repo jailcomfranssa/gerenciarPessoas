@@ -6,6 +6,9 @@ import github.com.jailcomfranssa.gerenciarPessoas.repository.PessoaRepository;
 import github.com.jailcomfranssa.gerenciarPessoas.service.PessoaService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -48,9 +51,9 @@ public class PessoaServiceImpl implements PessoaService {
     }
 
     @Override
-    public List<PessoaDto> listarPessoa() {
+    public Page<PessoaDto> listarPessoa(Pageable pageable) {
         List<Pessoa> pessoas = this.pessoaRepository.findAll();
         List<PessoaDto> pessoaDados = pessoas.stream().map((p) -> this.modelMapper.map(p, PessoaDto.class)).toList();
-        return pessoaDados;
+        return new PageImpl<>(pessoaDados);
     }
 }

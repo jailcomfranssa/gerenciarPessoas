@@ -3,6 +3,8 @@ package github.com.jailcomfranssa.gerenciarPessoas.controller;
 import github.com.jailcomfranssa.gerenciarPessoas.model.dto.PessoaDto;
 import github.com.jailcomfranssa.gerenciarPessoas.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,8 +33,8 @@ public class PessoaController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<PessoaDto>> listar(){
-        return new ResponseEntity<>(pessoaService.listarPessoa(),HttpStatus.OK);
+    public ResponseEntity<Page<PessoaDto>> listar(Pageable pageable){
+        return new ResponseEntity<>(pessoaService.listarPessoa(pageable),HttpStatus.OK);
     }
 
     @PutMapping("/{id}")

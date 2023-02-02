@@ -9,6 +9,9 @@ import github.com.jailcomfranssa.gerenciarPessoas.repository.PessoaRepository;
 import github.com.jailcomfranssa.gerenciarPessoas.service.EnderecoServico;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,12 +51,12 @@ public class EnderecoServiceImpl implements EnderecoServico {
     }
 
     @Override
-    public List<EnderecoDto> listarEndereco() {
+    public Page<EnderecoDto> listarEndereco(Pageable pageable) {
         List<Endereco> enderecos = this.enderecoRepository.findAll();
-        List<EnderecoDto> enderecoDtos = enderecos.stream().map((e)->
-                this.modelMapper.map(e, EnderecoDto.class)).toList();
+        List<EnderecoDto> enderecoDtos = enderecos.stream()
+                .map((e)-> this.modelMapper.map(e, EnderecoDto.class)).toList();
 
-        return enderecoDtos;
+        return new PageImpl<>(enderecoDtos) ;
     }
 
     @Override
