@@ -12,9 +12,4 @@ public class GerenciarPessoasApplication {
 		SpringApplication.run(GerenciarPessoasApplication.class, args);
 	}
 
-	@Bean
-	public ModelMapper modelMapper(){
-		return new ModelMapper();
-	}
-
 }
