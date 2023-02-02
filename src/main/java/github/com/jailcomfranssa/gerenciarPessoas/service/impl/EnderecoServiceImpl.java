@@ -57,9 +57,9 @@ public class EnderecoServiceImpl implements EnderecoServico {
     }
 
     @Override
-    public EnderecoDto enderecoPrincipal(Long id) {
-        Endereco endereco = this.enderecoRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("Pessoa Id: " + id + " não encontrada"));
+    public EnderecoDto enderecoPrincipal(Long pessoa_id) {
+        Endereco endereco = this.enderecoRepository.findById(pessoa_id)
+                .orElseThrow(()-> new RuntimeException("Pessoa Id: " + pessoa_id + " não encontrada"));
         Endereco _endereco = this.enderecoRepository.findByPrincipal(endereco.getId());
 
         return this.modelMapper.map(_endereco, EnderecoDto.class);
