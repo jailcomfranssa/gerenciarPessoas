@@ -1,6 +1,5 @@
 package github.com.jailcomfranssa.gerenciarPessoas.repository;
 
-import github.com.jailcomfranssa.gerenciarPessoas.model.dto.PessoaDto;
 import github.com.jailcomfranssa.gerenciarPessoas.model.entities.Pessoa;
 import github.com.jailcomfranssa.gerenciarPessoas.tests.Factory;
 import org.junit.jupiter.api.Assertions;
