@@ -1,5 +1,9 @@
 # gerenciarPessoas
 
+ Docx: Qualidade de código
+* [Avaliao_desenvolvedor_backend](https://github.com/jailcomfranssa/gerenciarPessoas/blob/main/avaliao_desenvolvedor_backend.docx)
+# 
+
 
 ### Reference Documentation
 For further reference, please consider the following sections:
