@@ -37,15 +37,15 @@ class EnderecoControllerTest {
 
     @BeforeEach
     void setUp(){
-        PageImpl<EnderecoDto> enderecoDtos = new PageImpl<>(List.of(Factory.criarEnderecoDto()));
+        PageImpl<EnderecoDto> enderecoDtos = new PageImpl<>(List.of(Factory.criarEnderecoDtoId()));
         BDDMockito.when(enderecoServico.listarEndereco(ArgumentMatchers.any()))
                 .thenReturn(enderecoDtos);
 
         BDDMockito.when(enderecoServico.criarEndereco(ArgumentMatchers.any(EnderecoDto.class),ArgumentMatchers.anyLong()))
-                .thenReturn(Factory.criarEnderecoDto());
+                .thenReturn(Factory.criarEnderecoDtoId());
 
         BDDMockito.when(enderecoServico.enderecoPrincipal(ArgumentMatchers.anyLong()))
-                .thenReturn(Factory.criarEnderecoDto());
+                .thenReturn(Factory.criarEnderecoDtoId());
 
         BDDMockito.when(pessoaService.criarPessoa(ArgumentMatchers.any(PessoaDto.class)))
                 .thenReturn(Factory.criarPessoaId());
@@ -57,7 +57,7 @@ class EnderecoControllerTest {
     @DisplayName("Salva Endereço Com Sucesso")
     void criar() {
         var pessoa = pessoaController.criar(Factory.criarPessoaId()).getBody();
-        EnderecoDto enderecoDto = enderecoController.criar(Factory.criarEnderecoDto(),pessoa.getId()).getBody();
+        EnderecoDto enderecoDto = enderecoController.criar(Factory.criarEnderecoDtoId(),pessoa.getId()).getBody();
         Assertions.assertThat(enderecoDto).isNotNull();
 
     }
@@ -65,7 +65,7 @@ class EnderecoControllerTest {
     @Test
     @DisplayName("Listar Todos Endereços Com Sucesso")
     void listar() {
-        var cidadeEsperado = Factory.criarEnderecoDto().getCidade();
+        var cidadeEsperado = Factory.criarEnderecoDtoId().getCidade();
         Page<EnderecoDto> enderecos = enderecoController.listar(null).getBody();
 
         Assertions.assertThat(enderecos).isNotNull();

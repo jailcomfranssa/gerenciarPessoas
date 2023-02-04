@@ -1,4 +1,4 @@
-package github.com.jailcomfranssa.gerenciarPessoas.settings;
+package github.com.jailcomfranssa.gerenciarPessoas.settings.modelMapper;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

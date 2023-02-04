@@ -52,10 +52,22 @@ public class Factory {
         return endereco;
     }
 
-    public static EnderecoDto criarEnderecoDto(){
+    public static EnderecoDto criarEnderecoDtoId(){
         EnderecoDto endereco = new EnderecoDto();
         endereco.setPessoa(criarPessoaDto());
         endereco.setId(1L);
+        endereco.setLogradouro("Rua 01");
+        endereco.setCep("000211");
+        endereco.setCidade("João Pessoa");
+        endereco.setNumero("20B");
+        endereco.setPrincipal(true);
+
+        return endereco;
+    }
+
+    public static EnderecoDto criarEnderecoDto(){
+        EnderecoDto endereco = new EnderecoDto();
+        endereco.setPessoa(criarPessoaDto());
         endereco.setLogradouro("Rua 01");
         endereco.setCep("000211");
         endereco.setCidade("João Pessoa");
